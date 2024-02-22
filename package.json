@@ -1,0 +1,17 @@
+{
+  "name": "group1-69-audio-visualizer",
+  "version": "1.0.0",
+  "description": "Audio Visulizer Group 1 CMPM 169",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Group 1",
+  "license": "MIT",
+  "dependencies": {
+    "p5": "^1.9.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0"
+  }
+}
