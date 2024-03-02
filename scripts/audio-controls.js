@@ -1,3 +1,6 @@
+//AUDI or audio?
+let audio = new Audio();
+
 const audioButtonBar = document.createElement("div");
 audioButtonBar.className = "button-container";
 
@@ -6,6 +9,9 @@ const buttons = [
   { class: "button", id: "pauseButton", text: "Pause", function: pause },
   { class: "button", id: "stopButton", text: "Stop", function: stop },
   { class: "button", id: "loopButton", text: "Loop", function: loop },
+  // upload download by lukas  
+  { class: "button", id: "uploadButton", text: "Upload", function: upload },
+  { class: "button", id: "downloadButton", text: "Download", function: download },
 ];
 
 buttons.forEach((item) => {
@@ -21,18 +27,64 @@ document.body.appendChild(audioButtonBar);
 // Button Functions
 function play() {
   console.log("Play button clicked");
-}
-
-function pause() {
-  console.log("Pause button clicked");
+  if (audio.src) {
+    audio.play().then(() => console.log("Playing...")).catch(error => console.error("Error playing the file:", error));
+  } else {
+    console.log("No audio file loaded");
+  }
 }
 
 function stop() {
   console.log("Stop button clicked");
+  if (!audio.paused) {
+    audio.pause();
+    audio.currentTime = 0; // Reset the audio position
+    console.log("Audio stopped");
+  }
+}
+
+function pause() {
+  console.log("Pause button clicked");
+  if (!audio.paused) {
+    audio.pause();
+    console.log("Audio paused");
+  }
 }
 
 function loop() {
   console.log("Loop button clicked");
+}
+
+function upload() {
+  console.log("Upload button clicked");
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'audio/*'; // Accept only audio files
+  fileInput.click();
+
+  fileInput.onchange = function() {
+    const files = this.files;
+    if (files.length === 0) {
+      console.log('No file selected!');
+      return;
+    }
+    const file = files[0];
+    audio.src = URL.createObjectURL(file);
+    console.log('File uploaded:', file.name);
+  };
+}
+
+function download() {
+  console.log("Download button clicked");
+  html2canvas(document.body).then(canvas => {
+      const image = canvas.toDataURL("image/png");
+      const link = document.createElement('a');
+      link.download = 'screenshot.png';
+      link.href = image;
+      document.body.appendChild(link);
+      link.click(); 
+      document.body.removeChild(link); 
+  }).catch(err => console.error("Error taking screenshot:", err));
 }
 
 const audioSliderBar = document.createElement("div");
