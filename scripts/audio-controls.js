@@ -45,6 +45,11 @@ const sliders = [
 ];
 
 sliders.forEach((item) => {
+  const label = document.createElement("label");
+  label.style = " text-align:center"
+  label.innerText = item.text;
+  label.form = item.text;
+
   const slider = document.createElement("input");
   slider.id = item.id;
 
@@ -57,12 +62,8 @@ sliders.forEach((item) => {
   slider.step = 0.01;
   slider.value = 0.5;
 
-  const label = document.createElement("label");
-  label.innerText = item.text;
-  label.form = item.text;
-
-  audioSliderBar.appendChild(slider);
   audioSliderBar.appendChild(label);
+  audioSliderBar.appendChild(slider);
 });
 
 document.body.appendChild(audioSliderBar);
