@@ -11,17 +11,21 @@ jqueryScript.onload = function() {
             if (!document.fullscreenElement) {
                 if (elem.requestFullscreen) {
                     elem.requestFullscreen();
-                } else if (elem.webkitRequestFullscreen) {
+                } else if (elem.mozRequestFullscreen) { // Used by Firefox
+                    elem.mozRequestFullscreen();
+                } else if (elem.webkitRequestFullscreen) { // Used by Chrome, Safari and Opera
                     elem.webkitRequestFullscreen();
-                } else if (elem.msRequestFullscreen) {
+                } else if (elem.msRequestFullscreen) { // Used by Edge
                     elem.msRequestFullscreen();
                 }
             } else {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
+                } else if (document.mozCancelFullscreen) { // Used by Firefox
+                    document.mozCancelFullscreen();
+                } else if (document.webkitExitFullscreen) { // Used by Chrome, Safari and Opera
                     document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) {
+                } else if (document.msExitFullscreen) { // Used by Edge
                     document.msExitFullscreen();
                 }
             }
