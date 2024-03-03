@@ -36,6 +36,10 @@ const audioControlsScript = document.createElement("script");
 audioControlsScript.src = "./scripts/audio-controls.js";
 document.body.appendChild(audioControlsScript);
 
+const fullscreenScript = document.createElement("script");
+fullscreenScript.src = "./scripts/fullscreen.js";
+document.body.appendChild(fullscreenScript);
+
 // Load jQuery library
 const jqueryScript = document.createElement("script");
 jqueryScript.src = "https://code.jquery.com/jquery-3.6.3.min.js";
