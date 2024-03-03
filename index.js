@@ -23,8 +23,6 @@ visualizerContainer.appendChild(label);
 visualizerContainer.appendChild(audioVisualizerCanvas);
 document.body.appendChild(visualizerContainer);
 
-
-
 //p5.js library
 const p5Script = document.createElement("script");
 p5Script.src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js";
@@ -37,6 +35,7 @@ document.body.appendChild(html2CanvasScript);
 const audioControlsScript = document.createElement("script");
 audioControlsScript.src = "./scripts/audio-controls.js";
 document.body.appendChild(audioControlsScript);
+
 // Load jQuery library
 const jqueryScript = document.createElement("script");
 jqueryScript.src = "https://code.jquery.com/jquery-3.6.3.min.js";
