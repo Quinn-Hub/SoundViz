@@ -4,5 +4,4 @@ npm-debug.log
 .nyc
 .env
 .DS_Store
-.vscode/extensions.json
-.vscode/launch.json
+.vscode
