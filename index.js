@@ -37,6 +37,10 @@ document.body.appendChild(html2CanvasScript);
 const audioControlsScript = document.createElement("script");
 audioControlsScript.src = "./scripts/audio-controls.js";
 document.body.appendChild(audioControlsScript);
+//switch visualizer buttons
+const switchVisualizersScript = document.createElement("script");
+switchVisualizersScript.src = "./scripts/switch-visualizers.js";
+document.body.appendChild(switchVisualizersScript);
 // Load jQuery library
 const jqueryScript = document.createElement("script");
 jqueryScript.src = "https://code.jquery.com/jquery-3.6.3.min.js";
