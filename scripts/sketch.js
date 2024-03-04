@@ -25,7 +25,7 @@ function setup() {
 function draw() {
   background(0);
 
-  lucas_viuslizser();
+  lukas_visualizer();
 }
 
 function uploadSong() {
@@ -49,7 +49,7 @@ function uploadSong() {
   };
 }
 
-function lucas_viuslizser() {
+function lukas_visualizer() {
   if (sound.isPlaying()) {
     let spectrum = fft.analyze();
 
