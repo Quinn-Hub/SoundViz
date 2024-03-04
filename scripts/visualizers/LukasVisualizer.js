@@ -9,8 +9,6 @@
 // In a longer project I like to put these in a separate file
 
 let canvasContainer;
-let sound;
-let isSoundPlaying = false;
 let particles = [];
 let audio;
 
@@ -35,7 +33,7 @@ let explosionRate = 10; // Adjust this value to control the rate of explosions
 function draw() {
     background(0);
 
-    if (isSoundPlaying) {
+    if (audio) {
         let spectrum = fft.analyze();
 
         // Create explosions for bass frequencies at a controlled rate

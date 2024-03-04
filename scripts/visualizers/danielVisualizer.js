@@ -31,9 +31,6 @@ function setup() {
   // Initialize FFT
   fft = new p5.FFT();
 
-  // Play the audio file
-  audio.play();
-
   // Set the audio to loop indefinitely
   audio.setLoop(true);
 
