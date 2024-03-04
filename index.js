@@ -35,6 +35,10 @@ document.body.appendChild(html2CanvasScript);
 const audioControlsScript = document.createElement("script");
 audioControlsScript.src = "./scripts/audio-controls.js";
 document.body.appendChild(audioControlsScript);
+//switch visualizer buttons
+const switchVisualizersScript = document.createElement("script");
+switchVisualizersScript.src = "./scripts/switch-visualizers.js";
+document.body.appendChild(switchVisualizersScript);
 //full screen
 const fullscreenScript = document.createElement("script");
 fullscreenScript.src = "./scripts/fullscreen.js";
