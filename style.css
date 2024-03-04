@@ -88,3 +88,7 @@
   height: 460px;
   outline:auto;
 }
+
+body {
+  overflow: hidden;
+}
