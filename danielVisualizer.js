@@ -9,10 +9,12 @@ let fft;
 let particles = [];
 let canvasContainer;
 let rotationAngle = 0; // Variable to control rotation angle
+let sound;
 
 // Preload function to load the audio file before setup
 function preload() {
-  audio = loadSound('audio/electric.mp3');
+  audio = loadSound('audio/Franz_Ferdinand_This_Fire.mp3');
+  audioControls = new AudioControls(audio); // Pass the sound object to AudioControls
 }
 
 function setup() {
