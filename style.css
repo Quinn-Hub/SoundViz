@@ -71,16 +71,19 @@
   cursor: pointer;
 }
 
-.canvas-container {
+#canvas-container {
   position: fixed;
-  top: 0%;
+  top: 5%;
   left: 15%;
-  text-align: center; /* Center align content horizontally */
+  text-align: center;
+  width: 83%;
+  height: 70%;
+  outline: auto;
 }
 
 .label {
-  display: block; 
-  margin-bottom: 20px; 
+  display: block;
+  margin-bottom: 20px;
 }
 
 .canvas {
