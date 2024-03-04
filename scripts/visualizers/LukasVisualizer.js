@@ -1,28 +1,33 @@
-//Lukas's Visualizer
+// sketch.js - purpose and description here
+// Author: Your Name
+// Date:
+
+// Here is how you might set up an OOP p5.js project
+// Note that p5.js looks for a file called sketch.js
+
+// Constants - User-servicable parts
+// In a longer project I like to put these in a separate file
 
 let canvasContainer;
 let sound;
 let isSoundPlaying = false;
 let particles = [];
+let audio;
+
+
+function preload() {
+    audio = loadSound('audio/Franz_Ferdinand_This_Fire.mp3');
+    audioControls = new AudioControls(audio); // Pass the sound object to AudioControls
+  }
+
 
 // setup() function is called once when the program starts
 function setup() {
     // place our canvas, making it fit our container
-
-    
-    /*
     canvasContainer = $("#canvas-container");
     createCanvas(canvasContainer.width(), canvasContainer.height()).parent("canvas-container");
+    // Adjust canvas size when window is resized
     $(window).resize(() => resizeCanvas(canvasContainer.width(), canvasContainer.height()));
-
-    // resize canvas is the page is resized
-    $(window).resize(function() {
-        console.log("Resizing..."); 
-        resizeCanvas(canvasContainer.width(), canvasContainer.height());
-    });
-    */
-   
-    //maybe instead we clear canvas here?
     fft = new p5.FFT();
 
 }
