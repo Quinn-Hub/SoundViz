@@ -213,6 +213,7 @@ class AudioControls {
   volume() {
     console.log("Volume Slider changed");
     // You can access the slider value using this.value
+    this.audio.volume = this.value;
   }
 
   bass() {

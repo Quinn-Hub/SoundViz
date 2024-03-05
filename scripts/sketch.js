@@ -41,7 +41,12 @@ function setup() {
     let angle = i * angleIncrement + 3.15;
     let x = bigCircleX + cos(angle) * bigCircleRadius;
     let y = bigCircleY + sin(angle) * bigCircleRadius;
-    circleProperties.push({ x: x, y: y, size: smallCircleRadius, color: color(255, 0, 0) });
+    circleProperties.push({
+      x: x,
+      y: y,
+      size: smallCircleRadius,
+      color: color(255, 0, 0),
+    });
   }
 
   circleProperties[0].size = 40; // Change size
@@ -51,119 +56,131 @@ function setup() {
 function draw() {
   background(0);
 
-  if (clickedIndex == 0) {
-    lukas_visualizer();
-  } else if (clickedIndex == 1) {
-    daniel_visualizer();
-  } else if (clickedIndex == 2) {
-    //clickedIndexText = "3";
-  } else if (clickedIndex == 3) {
-    //clickedIndexText = "4";
-  } else if (clickedIndex == 4) {
-    //clickedIndexText = "5";
-  }
+   lukas_visualizer(
+     sound,
+     fft,
+     particles,
+     canvasContainer,
+     numSmallCircles,
+     circleProperties,
+     smallCircleRadius,
+     clickedIndexText,
+     clickedIndex
+   );
+
+
+  //daniel_visualizer(sound, fft, particles, canvasContainer, bigCircleX, bigCircleY, bigCircleRadius, rotationAngle);
+
+  // if (clickedIndex == 0) {
+  //   lukas_visualizer();
+  // } else if (clickedIndex == 1) {
+  //   daniel_visualizer();
+  // } else if (clickedIndex == 2) {
+  //   //clickedIndexText = "3";
+  // } else if (clickedIndex == 3) {
+  //   //clickedIndexText = "4";
+  // } else if (clickedIndex == 4) {
+  //   //clickedIndexText = "5";
+  // }
 
   // Switch visualizer buttons
   drawSwitchVisualizerButtons();
 }
 
-function uploadSong() {
-  console.log("Upload button clicked");
-  const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.accept = "audio/*"; // Accept only audio files
-  fileInput.click();
 
-  fileInput.onchange = function () {
-    const files = this.files;
-    if (files.length === 0) {
-      console.log("No file selected!");
-      return;
+function mousePressed() {
+  for (let i = 0; i < numSmallCircles; i++) {
+    let props = circleProperties[i];
+    let d = dist(mouseX, mouseY, props.x, props.y);
+    if (d < props.size) {
+      clickedIndex = i;
+      if (clickedIndex == 0) {
+        clickedIndexText = "1";
+      } else if (clickedIndex == 1) {
+        clickedIndexText = "2";
+      } else if (clickedIndex == 2) {
+        clickedIndexText = "3";
+      } else if (clickedIndex == 3) {
+        clickedIndexText = "4";
+      } else if (clickedIndex == 4) {
+        clickedIndexText = "5";
+      }
+      break; // Stop the loop if a circle is clicked
     }
-    const file = files[0];
-    const audioUrl = URL.createObjectURL(file);
-    sound.stop(); // Stop the currently playing sound
-    sound = loadSound(audioUrl, () => sound.play()); // Load and play the new audio file
-    console.log("File uploaded:", file.name);
-  };
+  }
+
+  if (clickedIndex !== -1) {
+    // Reset properties of all circles to their original values
+    for (let i = 0; i < numSmallCircles; i++) {
+      circleProperties[i].size = smallCircleRadius;
+      circleProperties[i].color = color(255, 0, 0);
+    }
+
+    // Change size and color of the clicked circle
+    circleProperties[clickedIndex].size = 40; // Change size
+    circleProperties[clickedIndex].color = color(0, 0, 255);
+    console.log("Button", clickedIndex + 1, "clicked");
+  }
 }
 
-function lukas_visualizer() {
+function drawSwitchVisualizerButtons() {
+  // Draw the big circle
+  noFill();
+  stroke(0);
+  fill(220);
+  ellipse(bigCircleX, bigCircleY, bigCircleRadius * 2);
+  fill(0);
+  text(
+    clickedIndexText,
+    canvasContainer.width / 2 - 10,
+    canvasContainer.height - 30
+  );
+
+  // Draw the smaller circles along the edge of the big circle
+  for (let i = 0; i < numSmallCircles; i++) {
+    let props = circleProperties[i];
+    let d = dist(mouseX, mouseY, props.x, props.y);
+    if (d < props.size) {
+      fill(0, 255, 0);
+    } else {
+      fill(props.color);
+    }
+    noStroke();
+    ellipse(props.x, props.y, props.size * 2);
+    fill(255);
+    textSize(50);
+    text(i + 1, props.x - 10, props.y + 15);
+  }
+}
+
+function resizeCanvasHandler() {
+  resizeCanvas(canvasContainer.width, canvasContainer.height);
+}
+
+
+// lUCAS 
+function lukas_visualizer(
+  sound,
+  fft,
+  particles,
+  canvasContainer,
+  numSmallCircles,
+  circleProperties,
+  smallCircleRadius,
+  clickedIndexText,
+  clickedIndex
+) {
   if (sound.isPlaying()) {
     let spectrum = fft.analyze();
 
-    createExplosions(spectrum);
+    createExplosions(spectrum, particles);
     drawEqualizerBars(spectrum);
   }
 
-  updateAndDisplayParticles();
+  updateAndDisplayParticles(particles);
 }
 
-function daniel_visualizer() {
-  if (sound.isPlaying()) {
-    let spectrum = fft.analyze();
-
-    // Set frame rate
-    frameRate(30);
-
-    // Clear the canvas and set background color
-    background(255);
-
-    // Draw a star in the center of the canvas with rotation
-    angleMode(RADIANS);
-    stroke(100);
-    noFill();
-    strokeWeight(2);
-    push(); // Save current transformation state
-    translate(width / 2, height / 2); // Translate to the center of the canvas
-    rotate(rotationAngle); // Rotate the canvas
-    star(0, 0, 180, 300, 5); // Draw the star at (0, 0)
-    pop(); // Restore previous transformation state
-    rotationAngle += 0.01; // Increment rotation angle for smooth rotation
-
-    // Switch angle mode back to DEGREES for FFT waveform
-    angleMode(DEGREES);
-    translate(width / 2, height / 2);
-    
-    // Analyze the audio with FFT
-    fft.analyze();
-    let amp = fft.getEnergy(20, 200);
-    let wave = fft.waveform();
-    stroke(0);
-    noFill();
-
-    // Draw guitar strings based on audio waveform
-    for (let l = -1; l <= 1; l += 2) {
-      for (let h = 0; h <= 400; h += 100) {
-        beginShape();
-        for (let i = 0; i <= 180; i += 0.5) {
-          let index = floor(map(i, 0, 180, 0, wave.length - 1));
-          let r = map(wave[index], -1, 1, 260, 190);
-          let x = r * i * l;
-          let y = r - h;
-          vertex(x, y);
-        }
-        endShape();
-      }
-    }
-
-    // Create and manage particles
-    let p = new DanielParticle();
-    particles.push(p);
-
-    for (let i = particles.length - 1; i >= 0; i--) {
-      if (!particles[i].edges()) {
-        particles[i].update(amp > 230);
-        particles[i].show();
-      } else {
-        particles.splice(i, 1);
-      }
-    }
-    translate(-1 * (width / 2), -height / 2);
-  }
-}
-
-function createExplosions(spectrum) {
+function createExplosions(spectrum, particles) {
   let bassStart = 0;
   let bassEnd = 20;
 
@@ -175,7 +192,7 @@ function createExplosions(spectrum) {
         let radius = map(spectrum[i], 0, 255, 10, min(width, height) / 2);
         let x = random(width);
         let y = random(height);
-        createExplosion(x, y, radius, spectrum[i]);
+        createExplosion(x, y, radius, spectrum[i], particles);
       }
     }
   }
@@ -195,14 +212,14 @@ function drawEqualizerBars(spectrum) {
   }
 }
 
-function updateAndDisplayParticles() {
+function updateAndDisplayParticles(particles) {
   for (let particle of particles) {
     particle.update();
     particle.display();
   }
 }
 
-function createExplosion(x, y, radius, spectrumValue) {
+function createExplosion(x, y, radius, spectrumValue, particles) {
   let explosionColor = color(map(spectrumValue, 0, 255, 0, 360), 80, 90);
 
   for (let i = 0; i < 20; i++) {
@@ -246,6 +263,101 @@ class LukasParticle {
   }
 }
 
+
+
+// DANIEL 
+function daniel_visualizer(
+  sound,
+  fft,
+  particles,
+  canvasContainer,
+  bigCircleX,
+  bigCircleY,
+  bigCircleRadius,
+  rotationAngle
+) {
+  if (sound.isPlaying()) {
+    let spectrum = fft.analyze();
+
+    // Set frame rate
+    frameRate(30);
+
+    // // Clear the canvas and set background color
+    // background(255);
+
+    // Draw a star in the center of the canvas with rotation
+    drawStar(rotationAngle); // Increment rotation angle for smooth rotation
+
+    // Switch angle mode back to DEGREES for FFT waveform
+    let { wave, amp } = starFFT(fft);
+
+    // Draw guitar strings based on audio waveform
+    drawGuitarStrings(wave);
+
+    // Create and manage particles
+    DanielParticleManager(amp, particles);
+  }
+}
+
+function DanielParticleManager(amp, particles) {
+  let p = new DanielParticle();
+  particles.push(p);
+
+  for (let i = particles.length - 1; i >= 0; i--) {
+    if (!particles[i].edges()) {
+      particles[i].update(amp > 230);
+      particles[i].show();
+    } else {
+      particles.splice(i, 1);
+    }
+  }
+  translate(-1 * (width / 2), -height / 2);
+}
+
+function drawGuitarStrings(wave) {
+  stroke(3);
+  fill(255, 2555, 255);
+  for (let l = -1; l <= 1; l += 2) {
+    for (let h = 0; h <= 400; h += 100) {
+      beginShape();
+      for (let i = 0; i <= 180; i += 0.5) {
+        let index = floor(map(i, 0, 180, 0, wave.length - 1));
+        let r = map(wave[index], -1, 1, 260, 190);
+        let x = r * i * l;
+        let y = r - h;
+        vertex(x, y);
+      }
+      endShape();
+    }
+  }
+}
+
+function starFFT(fft) {
+  angleMode(DEGREES);
+  translate(width / 2, height / 2);
+
+  // Analyze the audio with FFT
+  fft.analyze();
+  let amp = fft.getEnergy(20, 200);
+  let wave = fft.waveform();
+  stroke(0);
+  noFill();
+  return { wave, amp };
+}
+
+function drawStar(rotationAngle) {
+  angleMode(RADIANS);
+  stroke(100);
+  noFill();
+  strokeWeight(2);
+  push(); // Save current transformation state
+  translate(width / 2, height / 2); // Translate to the center of the canvas
+  rotate(rotationAngle); // Rotate the canvas
+  star(0, 0, 180, 300, 5); // Draw the star at (0, 0)
+  pop(); // Restore previous transformation state
+  rotationAngle += 0.01;
+}
+
 class DanielParticle {
   constructor() {
     this.pos = p5.Vector.random2D().mult(250);
@@ -263,78 +375,17 @@ class DanielParticle {
     }
   }
   edges() {
-    return (this.pos.x < -width / 2 || this.pos.x > width / 2 || this.pos.y < -height / 2 || this.pos.y > height / 2);
+    return (
+      this.pos.x < -width / 2 ||
+      this.pos.x > width / 2 ||
+      this.pos.y < -height / 2 ||
+      this.pos.y > height / 2
+    );
   }
   show() {
     noStroke();
     fill(random(0, 255));
     ellipse(this.pos.x, this.pos.y, this.w);
-  }
-}
-
-function resizeCanvasHandler() {
-  resizeCanvas(canvasContainer.width, canvasContainer.height);
-}
-
-function drawSwitchVisualizerButtons() {
-
-  // Draw the big circle
-  noFill();
-  stroke(0);
-  fill(220);
-  ellipse(bigCircleX, bigCircleY, bigCircleRadius * 2);
-  fill(0);
-  text(clickedIndexText, (canvasContainer.width / 2) - 10, canvasContainer.height - 30);
-
-  // Draw the smaller circles along the edge of the big circle
-  for (let i = 0; i < numSmallCircles; i++) {
-    let props = circleProperties[i];
-    let d = dist(mouseX, mouseY, props.x, props.y);
-    if (d < props.size) {
-      fill(0, 255, 0);
-    } else {
-      fill(props.color);
-    }
-    noStroke();
-    ellipse(props.x, props.y, props.size * 2);
-    fill(255);
-    textSize(50);
-    text(i + 1, props.x - 10, props.y + 15);
-  }
-}
-
-function mousePressed() {
-  for (let i = 0; i < numSmallCircles; i++) {
-    let props = circleProperties[i];
-    let d = dist(mouseX, mouseY, props.x, props.y);
-    if (d < props.size) {
-      clickedIndex = i;
-      if (clickedIndex == 0) {
-        clickedIndexText = "1";
-      } else if (clickedIndex == 1) {
-        clickedIndexText = "2";
-      } else if (clickedIndex == 2) {
-        clickedIndexText = "3";
-      } else if (clickedIndex == 3) {
-        clickedIndexText = "4";
-      } else if (clickedIndex == 4) {
-        clickedIndexText = "5";
-      }
-      break; // Stop the loop if a circle is clicked
-    }
-  }
-
-  if (clickedIndex !== -1) {
-    // Reset properties of all circles to their original values
-    for (let i = 0; i < numSmallCircles; i++) {
-      circleProperties[i].size = smallCircleRadius;
-      circleProperties[i].color = color(255, 0, 0);
-    }
-
-    // Change size and color of the clicked circle
-    circleProperties[clickedIndex].size = 40; // Change size
-    circleProperties[clickedIndex].color = color(0, 0, 255);
-    console.log("Button", clickedIndex + 1, "clicked");
   }
 }
 
@@ -353,3 +404,4 @@ function star(x, y, radius1, radius2, npoints) {
   }
   endShape(CLOSE);
 }
+
