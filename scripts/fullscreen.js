@@ -3,7 +3,6 @@
 // Purpose: Fullscreen functionaltiy for canvas object
 
 // Wait for jQuery to be loaded
-jqueryScript.onload = function() {
     $(document).ready(function() {
         // Function to toggle full screen mode
         function toggleFullScreen() {
@@ -37,11 +36,10 @@ jqueryScript.onload = function() {
             .text("Toggle Full Screen");
 
         // Append fullscreen button to canvas container
-        $(".canvas-container").append(fullscreenButton);
+        $("body").append(fullscreenButton);
 
         // Click event handler for the button to toggle full screen mode
         $(document).on("click", "#fullscreen-button", function() {
             toggleFullScreen();
         });
     });
-};

@@ -95,3 +95,16 @@
 body {
   overflow: hidden;
 }
+
+#fullscreen-button {
+  position: fixed;
+  left: 51.5%;
+  bottom: 20%;
+  /*transform: translate(-50%, -50%);*/
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
