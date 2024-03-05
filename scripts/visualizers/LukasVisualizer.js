@@ -11,6 +11,8 @@
 let canvasContainer;
 let particles = [];
 let audio;
+let rotationAngle = 0; // Variable to control rotation angle
+let sound;
 
 
 function preload() {
