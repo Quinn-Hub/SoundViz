@@ -97,9 +97,9 @@ body {
 }
 
 #fullscreen-button {
-  position: fixed;
+  position:relative;
   left: 51.5%;
-  bottom: 20%;
+  bottom: 5%;
   /*transform: translate(-50%, -50%);*/
   background-color: black;
   color: white;
