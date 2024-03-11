@@ -1,7 +1,9 @@
 // sketch.js
 let canvasContainer;
 let particles = [];
+let circleParticles = [];
 let fft;
+let fft2;
 let sound;
 let mode = 0;
 let rotationAngle = 0;
@@ -15,6 +17,7 @@ let angleIncrement;
 let circleProperties = [];
 let clickedIndexText = "1";
 let clickedIndex = 0;
+let layerToggled = [];
 
 let audioControls;
 
@@ -31,6 +34,7 @@ function setup() {
   window.addEventListener("resize", resizeCanvasHandler);
 
   fft = new p5.FFT();
+  fft2 = new p5.FFT();
 
   bigCircleX = canvasContainer.width / 2;
   bigCircleY = (canvasContainer.height / 16) * 15;
@@ -48,15 +52,37 @@ function setup() {
       color: color(255, 0, 0),
     });
   }
-
-  circleProperties[0].size = 40; // Change size
-  circleProperties[0].color = color(0, 0, 255);
 }
 
 function draw() {
   background(0);
 
-   lukas_visualizer(
+  if (sound.isPlaying()) {
+    let spectrum = fft.analyze();
+
+    for (i = 0; i < layerToggled.length; i++) {
+      if (layerToggled[i] == 0) {
+        createExplosions(spectrum, particles);
+      } else if (layerToggled[i] == 1) {
+        drawEqualizerBars(spectrum);
+      } else if (layerToggled[i] == 2) {
+        let amp = starFFT(fft2);
+        DanielParticleManager(amp, circleParticles);
+      } else if (layerToggled[i] == 3) {
+        rotationAngle += 0.01;
+        drawStar(rotationAngle);
+      } else if (layerToggled[i] == 4) {
+        // Add water ripple function here
+      }
+    }
+
+    //createExplosions(spectrum, particles);
+    //drawEqualizerBars(spectrum);
+  }
+
+  updateAndDisplayParticles(particles);
+
+   /*lukas_visualizer(
      sound,
      fft,
      particles,
@@ -66,22 +92,10 @@ function draw() {
      smallCircleRadius,
      clickedIndexText,
      clickedIndex
-   );
+   );*/
 
 
   //daniel_visualizer(sound, fft, particles, canvasContainer, bigCircleX, bigCircleY, bigCircleRadius, rotationAngle);
-
-  // if (clickedIndex == 0) {
-  //   lukas_visualizer();
-  // } else if (clickedIndex == 1) {
-  //   daniel_visualizer();
-  // } else if (clickedIndex == 2) {
-  //   //clickedIndexText = "3";
-  // } else if (clickedIndex == 3) {
-  //   //clickedIndexText = "4";
-  // } else if (clickedIndex == 4) {
-  //   //clickedIndexText = "5";
-  // }
 
   // Switch visualizer buttons
   drawSwitchVisualizerButtons();
@@ -95,14 +109,49 @@ function mousePressed() {
     if (d < props.size) {
       clickedIndex = i;
       if (clickedIndex == 0) {
+        if (layerToggled[i] != clickedIndex) {
+          layerToggled.push(clickedIndex);
+        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+          for (let j = 0; j <= layerToggled.length; j++) {
+            layerToggled.pop(layerToggled[i]);
+          }
+        }
         clickedIndexText = "1";
       } else if (clickedIndex == 1) {
+        if (layerToggled[i] != clickedIndex) {
+          layerToggled.push(clickedIndex);
+        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+          for (let j = 0; j <= layerToggled.length; j++) {
+            layerToggled.pop(layerToggled[i]);
+          }
+        }
         clickedIndexText = "2";
       } else if (clickedIndex == 2) {
+        if (layerToggled[i] != clickedIndex) {
+          layerToggled.push(clickedIndex);
+        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+          for (let j = 0; j <= layerToggled.length; j++) {
+            layerToggled.pop(layerToggled[i]);
+          }
+        }
         clickedIndexText = "3";
       } else if (clickedIndex == 3) {
+        if (layerToggled[i] != clickedIndex) {
+          layerToggled.push(clickedIndex);
+        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+          for (let j = 0; j <= layerToggled.length; j++) {
+            layerToggled.pop(layerToggled[i]);
+          }
+        }
         clickedIndexText = "4";
       } else if (clickedIndex == 4) {
+        if (layerToggled[i] != clickedIndex) {
+          layerToggled.push(clickedIndex);
+        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+          for (let j = 0; j <= layerToggled.length; j++) {
+            layerToggled.pop(4);
+          }
+        }
         clickedIndexText = "5";
       }
       break; // Stop the loop if a circle is clicked
@@ -117,8 +166,11 @@ function mousePressed() {
     }
 
     // Change size and color of the clicked circle
-    circleProperties[clickedIndex].size = 40; // Change size
-    circleProperties[clickedIndex].color = color(0, 0, 255);
+    for (let i = 0; i < layerToggled.length; i++) {
+      circleProperties[layerToggled[i]].size = 35; // Change size
+      circleProperties[layerToggled[i]].color = color(0, 255, 0);
+      console.log(layerToggled[i]);
+    }
     console.log("Button", clickedIndex + 1, "clicked");
   }
 }
@@ -141,12 +193,14 @@ function drawSwitchVisualizerButtons() {
     let props = circleProperties[i];
     let d = dist(mouseX, mouseY, props.x, props.y);
     if (d < props.size) {
-      fill(0, 255, 0);
+      fill(255, 255, 0);
     } else {
       fill(props.color);
     }
     noStroke();
     ellipse(props.x, props.y, props.size * 2);
+    stroke(0);
+    strokeWeight(5);
     fill(255);
     textSize(50);
     text(i + 1, props.x - 10, props.y + 15);
@@ -299,24 +353,25 @@ function daniel_visualizer(
   }
 }
 
-function DanielParticleManager(amp, particles) {
+function DanielParticleManager(amp, circleParticles) {
+  translate(width / 2, height / 2);
   let p = new DanielParticle();
-  particles.push(p);
+  circleParticles.push(p);
 
-  for (let i = particles.length - 1; i >= 0; i--) {
-    if (!particles[i].edges()) {
-      particles[i].update(amp > 230);
-      particles[i].show();
+  for (let i = circleParticles.length - 1; i >= 0; i--) {
+    if (!circleParticles[i].edges()) {
+      circleParticles[i].update(amp > 230);
+      circleParticles[i].show();
     } else {
-      particles.splice(i, 1);
+      circleParticles.splice(i, 1);
     }
   }
-  translate(-1 * (width / 2), -height / 2);
+  translate(-1 * (width / 2), -(height / 2));
 }
 
 function drawGuitarStrings(wave) {
   stroke(3);
-  fill(255, 2555, 255);
+  fill(255);
   for (let l = -1; l <= 1; l += 2) {
     for (let h = 0; h <= 400; h += 100) {
       beginShape();
@@ -332,16 +387,17 @@ function drawGuitarStrings(wave) {
   }
 }
 
-function starFFT(fft) {
+function starFFT(fft2) {
   angleMode(DEGREES);
   translate(width / 2, height / 2);
 
   // Analyze the audio with FFT
-  fft.analyze();
-  let amp = fft.getEnergy(20, 200);
-  let wave = fft.waveform();
+  //fft.analyze();
+  let amp = fft2.getEnergy(20, 200);
+  let wave = fft2.waveform();
   stroke(0);
   noFill();
+  translate(-(width / 2), -(height / 2));
   return { wave, amp };
 }
 
