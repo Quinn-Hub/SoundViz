@@ -71,7 +71,7 @@ class AudioControls {
         class: "slider",
         id: "volumeSlider",
         text: "Volume",
-        function: this.volume.bind(this),
+        function: (v) => this.volume(v),
       },
     ];
 
@@ -83,13 +83,15 @@ class AudioControls {
       const slider = document.createElement("input");
       slider.id = item.id;
       slider.className = item.class;
-      slider.addEventListener("input", item.function);
-      slider.name = item.text;
       slider.type = "range";
+      slider.name = item.text;
       slider.min = 0;
       slider.max = 1;
       slider.step = 0.01;
       slider.value = 0.5;
+      slider.addEventListener("input", (e) => {
+        item.function(e.target.value);
+      });
 
       audioSliderBar.appendChild(label);
       audioSliderBar.appendChild(slider);
@@ -131,10 +133,12 @@ class AudioControls {
     }
   }
 
-  volume() {
-    console.log("Volume Slider changed");
+  volume(v) {
+    console.log(this.sound);
+
     if (this.sound) {
-      this.sound.setVolume(parseFloat(this.value));
+      this.sound.setVolume(parseFloat(v));
+      console.log(v);
     }
   }
 }

@@ -19,10 +19,9 @@ let clickedIndexText = "1";
 let clickedIndex = 0;
 let layerToggled = [];
 
-let audioControls;
+let audioControls = new AudioControls();
 
 function preload() {
-  audioControls = new AudioControls(sound); // Pass the sound object to AudioControls
   audioControls.loadAudioByUrl("audio/Franz_Ferdinand_This_Fire.mp3");
 }
 
