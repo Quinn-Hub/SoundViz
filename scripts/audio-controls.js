@@ -73,6 +73,24 @@ class AudioControls {
         text: "Volume",
         function: (v) => this.volume(v),
       },
+      {
+        class: "slider",
+        id: "reverbSlider",
+        text: "Reverb",
+        function: (v) => this.reverb(v),
+      },
+      {
+        class: "slider",
+        id: "tempoSlider",
+        text: "Tempo",
+        function: (v) => this.tempo(v),
+      },
+      {
+        class: "slider",
+        id: "panSlider",
+        text: "Pan",
+        function: (v) => this.pan(v),
+      },
     ];
 
     sliders.forEach((item) => {
@@ -139,6 +157,33 @@ class AudioControls {
     if (this.sound) {
       this.sound.setVolume(parseFloat(v));
       console.log(v);
+    }
+  }
+
+  reverb(v) {
+    if (this.sound) {
+      // Adjust reverb properties based on the slider value
+      // Example:
+      this.sound.setReverb(v);
+    }
+  }
+
+  tempo(v) {
+    if (this.sound) {
+      // Adjust tempo based on the slider value
+      // Example:
+      let value = map (v, 0.0, 1.0, 60 , 180);
+      console.log(value);
+      this.sound.setTempo(value);
+    }
+  }
+
+  pan(v) {
+    if (this.sound) {
+      // Adjust pan based on the slider value
+      // Example:
+      let value = map(v, 0.0,1.0, -1.0,1.0);
+      this.sound.pan(value);
     }
   }
 }
