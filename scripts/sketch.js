@@ -22,8 +22,8 @@ let layerToggled = [];
 let audioControls;
 
 function preload() {
-  sound = loadSound("audio/Franz_Ferdinand_This_Fire.mp3");
   audioControls = new AudioControls(sound); // Pass the sound object to AudioControls
+  audioControls.loadAudioByUrl("audio/Franz_Ferdinand_This_Fire.mp3");
 }
 
 function setup() {
@@ -57,7 +57,7 @@ function setup() {
 function draw() {
   background(0);
 
-  if (sound.isPlaying()) {
+  if (audioControls.sound) {
     let spectrum = fft.analyze();
 
     for (i = 0; i < layerToggled.length; i++) {
