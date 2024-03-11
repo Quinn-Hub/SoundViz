@@ -120,7 +120,7 @@ class AudioControls {
 
   playSong() {
     console.log("Play button clicked");
-    if (this.sound) {
+    if (this.sound && !this.sound.isPlaying()) {
       this.sound.play();
       this.isPlaying = true;
     } else {
