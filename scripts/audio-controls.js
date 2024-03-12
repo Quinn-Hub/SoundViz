@@ -48,6 +48,19 @@ class AudioControls {
         text: "Loop",
         function: this.loopSong.bind(this),
       },
+      // upload download by lukas
+      {
+        class: "button",
+        id: "uploadButton",
+        text: "Upload",
+        function: this.uploadSong.bind(this),
+      },
+      {
+        class: "button",
+        id: "downloadButton",
+        text: "Download",
+        function: this.screenCapture.bind(this),
+      },
     ];
 
     buttons.forEach((item) => {
@@ -139,6 +152,54 @@ class AudioControls {
     }
   }
 
+  uploadSong() {
+    console.log("Upload button clicked");
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "audio/*"; // Accept only audio files
+    fileInput.click();
+
+    fileInput.onchange = () => {
+      const files = fileInput.files;
+      if (files.length === 0) {
+        console.log("No file selected!");
+        return;
+      }
+
+      const file = files[0];
+
+      // Check if the audio is currently playing
+      if (!this.audio.paused) {
+        this.audio.pause(); // Stop the currently playing audio
+        this.isPlaying = false;
+      }
+
+      // Load the new sound file into p5.js
+      sound.stop(); // Stop the current sound if it's playing
+      sound = loadSound(URL.createObjectURL(file));
+      this.isPlaying = false; // Reset the play state
+
+      // Assign the new audio source
+      this.audio.src = URL.createObjectURL(file);
+      console.log("File uploaded:", file.name);
+    };
+  }
+
+  screenCapture() {
+    console.log("Download button clicked");
+    html2canvas(document.body)
+      .then((canvas) => {
+        const image = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.download = "screenshot.png";
+        link.href = image;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch((err) => console.error("Error taking screenshot:", err));
+  }
+
   volume(v) {
     console.log(this.sound);
 
@@ -152,7 +213,7 @@ class AudioControls {
     if (this.sound) {
       // Adjust pan based on the slider value
       // Example:
-      let value = map(v, 0.0,1.0, -1.0,1.0);
+      let value = map(v, 0.0, 1.0, -1.0, 1.0);
       this.sound.pan(value);
     }
   }
