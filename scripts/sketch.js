@@ -19,6 +19,11 @@ let clickedIndexText = "1";
 let clickedIndex = 0;
 let layerToggled = [];
 
+let prevTime = 0;
+let gridSize = 20;
+let gridOffset = 5;
+let grid = [];
+
 let audioControls = new AudioControls();
 
 function preload() {
@@ -51,55 +56,47 @@ function setup() {
       color: color(255, 0, 0),
     });
   }
+
+  setUpGrid();
+}
+
+function setUpGrid() {
+  for (let x = 0; x < width + 25; x += gridSize) {
+    for (let y = 0; y < height + 25; y += gridSize) {
+      grid.push({ x: random(width + 25), y: random(height + 25) });
+    }
+  }
 }
 
 function draw() {
   background(0);
 
   if (audioControls.sound) {
-    let spectrum = fft.analyze();
+    // let spectrum = fft.analyze();
+    reuben_visulizer(audioControls.sound, fft);
 
-    for (i = 0; i < layerToggled.length; i++) {
-      if (layerToggled[i] == 0) {
-        createExplosions(spectrum, particles);
-      } else if (layerToggled[i] == 1) {
-        drawEqualizerBars(spectrum);
-      } else if (layerToggled[i] == 2) {
-        let amp = starFFT(fft2);
-        DanielParticleManager(amp, circleParticles);
-      } else if (layerToggled[i] == 3) {
-        rotationAngle += 0.01;
-        drawStar(rotationAngle);
-      } else if (layerToggled[i] == 4) {
-        // Add water ripple function here
-      }
-    }
-
-    //createExplosions(spectrum, particles);
-    //drawEqualizerBars(spectrum);
+    // for (i = 0; i < layerToggled.length; i++) {
+    //   if (layerToggled[i] == 0) {
+    //     createExplosions(spectrum, particles);
+    //   } else if (layerToggled[i] == 1) {
+    //     drawEqualizerBars(spectrum);
+    //   } else if (layerToggled[i] == 2) {
+    //     let amp = starFFT(fft2);
+    //     DanielParticleManager(amp, circleParticles);
+    //   } else if (layerToggled[i] == 3) {
+    //     rotationAngle += 0.01;
+    //     drawStar(rotationAngle);
+    //   } else if (layerToggled[i] == 4) {
+    //     // Add water ripple function here
+    //   } else if (layerToggled[i] == 5) {
+    
+    //   }
+    // }
   }
 
-  updateAndDisplayParticles(particles);
-
-   /*lukas_visualizer(
-     sound,
-     fft,
-     particles,
-     canvasContainer,
-     numSmallCircles,
-     circleProperties,
-     smallCircleRadius,
-     clickedIndexText,
-     clickedIndex
-   );*/
-
-
-  //daniel_visualizer(sound, fft, particles, canvasContainer, bigCircleX, bigCircleY, bigCircleRadius, rotationAngle);
-
-  // Switch visualizer buttons
-  drawSwitchVisualizerButtons();
+  // // Draw switch visualizer buttons
+  // drawSwitchVisualizerButtons();
 }
-
 
 function mousePressed() {
   for (let i = 0; i < numSmallCircles; i++) {
@@ -110,7 +107,10 @@ function mousePressed() {
       if (clickedIndex == 0) {
         if (layerToggled[i] != clickedIndex) {
           layerToggled.push(clickedIndex);
-        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+        } else if (
+          layerToggled[i] == clickedIndex &&
+          circleProperties[clickedIndex].size == 35
+        ) {
           for (let j = 0; j <= layerToggled.length; j++) {
             layerToggled.pop(layerToggled[i]);
           }
@@ -119,7 +119,10 @@ function mousePressed() {
       } else if (clickedIndex == 1) {
         if (layerToggled[i] != clickedIndex) {
           layerToggled.push(clickedIndex);
-        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+        } else if (
+          layerToggled[i] == clickedIndex &&
+          circleProperties[clickedIndex].size == 35
+        ) {
           for (let j = 0; j <= layerToggled.length; j++) {
             layerToggled.pop(layerToggled[i]);
           }
@@ -128,7 +131,10 @@ function mousePressed() {
       } else if (clickedIndex == 2) {
         if (layerToggled[i] != clickedIndex) {
           layerToggled.push(clickedIndex);
-        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+        } else if (
+          layerToggled[i] == clickedIndex &&
+          circleProperties[clickedIndex].size == 35
+        ) {
           for (let j = 0; j <= layerToggled.length; j++) {
             layerToggled.pop(layerToggled[i]);
           }
@@ -137,7 +143,10 @@ function mousePressed() {
       } else if (clickedIndex == 3) {
         if (layerToggled[i] != clickedIndex) {
           layerToggled.push(clickedIndex);
-        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+        } else if (
+          layerToggled[i] == clickedIndex &&
+          circleProperties[clickedIndex].size == 35
+        ) {
           for (let j = 0; j <= layerToggled.length; j++) {
             layerToggled.pop(layerToggled[i]);
           }
@@ -146,7 +155,10 @@ function mousePressed() {
       } else if (clickedIndex == 4) {
         if (layerToggled[i] != clickedIndex) {
           layerToggled.push(clickedIndex);
-        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+        } else if (
+          layerToggled[i] == clickedIndex &&
+          circleProperties[clickedIndex].size == 35
+        ) {
           for (let j = 0; j <= layerToggled.length; j++) {
             layerToggled.pop(4);
           }
@@ -210,8 +222,52 @@ function resizeCanvasHandler() {
   resizeCanvas(canvasContainer.width, canvasContainer.height);
 }
 
+// Reuben
+function reuben_visulizer(sound, fft) {
+  if (sound.isPlaying()) {
+    let spectrum = fft.analyze();
 
-// lUCAS 
+    // Calculate time elapsed since the last frame
+    let currentTime = millis();
+    let deltaTime = (currentTime - prevTime) / 1000; // Convert milliseconds to seconds
+    prevTime = currentTime;
+
+    // Loop through each square in the grid
+    for (let i = 0; i < grid.length; i++) {
+      let square = grid[i];
+
+      // Map FFT values to random translation amounts
+      let translateX = map(spectrum[i % spectrum.length], 0, 255, -2, 2);
+      let translateY = map(spectrum[(i + 1) % spectrum.length], 0, 255, -2, 2);
+
+      // Map FFT values to z-axis (color)
+      let translateZ = map(spectrum[(i + 2) % spectrum.length], 0, 255, 0, 255);
+
+      // Apply random translation to the square's position
+      square.x += translateX;
+      square.y += translateY;
+
+      // Constrain square within canvas width and height
+      square.x = constrain(square.x, gridOffset, width - gridOffset - gridSize);
+      square.y = constrain(
+        square.y,
+        gridOffset,
+        height - gridOffset - gridSize
+      );
+
+      // Calculate color based on translation in z-axis
+      let colorR = 100; // Constant red color
+      let colorG = 100; // Constant green color
+      let colorB = translateZ; // Map z-axis FFT value to blue channel
+
+      // Draw the square at its new position with calculated color
+      fill(colorR, colorG, colorB);
+      rect(square.x, square.y, gridSize, gridSize);
+    }
+  }
+}
+
+// lUCAS
 function lukas_visualizer(
   sound,
   fft,
@@ -316,9 +372,7 @@ class LukasParticle {
   }
 }
 
-
-
-// DANIEL 
+// DANIEL
 function daniel_visualizer(
   sound,
   fft,
@@ -459,4 +513,3 @@ function star(x, y, radius1, radius2, npoints) {
   }
   endShape(CLOSE);
 }
-
