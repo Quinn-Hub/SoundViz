@@ -103,75 +103,77 @@ function draw() {
 
 
 function mousePressed() {
-  for (let i = 0; i < numSmallCircles; i++) {
-    let props = circleProperties[i];
-    let d = dist(mouseX, mouseY, props.x, props.y);
-    if (d < props.size) {
-      clickedIndex = i;
-      if (clickedIndex == 0) {
-        if (layerToggled[i] != clickedIndex) {
-          layerToggled.push(clickedIndex);
-        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
-          for (let j = 0; j <= layerToggled.length; j++) {
-            layerToggled.pop(layerToggled[i]);
-          }
-        }
-        clickedIndexText = "1";
-      } else if (clickedIndex == 1) {
-        if (layerToggled[i] != clickedIndex) {
-          layerToggled.push(clickedIndex);
-        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
-          for (let j = 0; j <= layerToggled.length; j++) {
-            layerToggled.pop(layerToggled[i]);
-          }
-        }
-        clickedIndexText = "2";
-      } else if (clickedIndex == 2) {
-        if (layerToggled[i] != clickedIndex) {
-          layerToggled.push(clickedIndex);
-        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
-          for (let j = 0; j <= layerToggled.length; j++) {
-            layerToggled.pop(layerToggled[i]);
-          }
-        }
-        clickedIndexText = "3";
-      } else if (clickedIndex == 3) {
-        if (layerToggled[i] != clickedIndex) {
-          layerToggled.push(clickedIndex);
-        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
-          for (let j = 0; j <= layerToggled.length; j++) {
-            layerToggled.pop(layerToggled[i]);
-          }
-        }
-        clickedIndexText = "4";
-      } else if (clickedIndex == 4) {
-        if (layerToggled[i] != clickedIndex) {
-          layerToggled.push(clickedIndex);
-        } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
-          for (let j = 0; j <= layerToggled.length; j++) {
-            layerToggled.pop(4);
-          }
-        }
-        clickedIndexText = "5";
-      }
-      break; // Stop the loop if a circle is clicked
-    }
-  }
-
-  if (clickedIndex !== -1) {
-    // Reset properties of all circles to their original values
+  if (circleProperties && circleProperties.length > 0) {
     for (let i = 0; i < numSmallCircles; i++) {
-      circleProperties[i].size = smallCircleRadius;
-      circleProperties[i].color = color(255, 0, 0);
+      let props = circleProperties[i];
+      let d = dist(mouseX, mouseY, props.x, props.y);
+      if (d < props.size) {
+        clickedIndex = i;
+        if (clickedIndex == 0) {
+          if (layerToggled[i] != clickedIndex) {
+            layerToggled.push(clickedIndex);
+          } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+            for (let j = 0; j <= layerToggled.length; j++) {
+              layerToggled.pop(layerToggled[i]);
+            }
+          }
+          clickedIndexText = "1";
+        } else if (clickedIndex == 1) {
+          if (layerToggled[i] != clickedIndex) {
+            layerToggled.push(clickedIndex);
+          } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+            for (let j = 0; j <= layerToggled.length; j++) {
+              layerToggled.pop(layerToggled[i]);
+            }
+          }
+          clickedIndexText = "2";
+        } else if (clickedIndex == 2) {
+          if (layerToggled[i] != clickedIndex) {
+            layerToggled.push(clickedIndex);
+          } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+            for (let j = 0; j <= layerToggled.length; j++) {
+              layerToggled.pop(layerToggled[i]);
+            }
+          }
+          clickedIndexText = "3";
+        } else if (clickedIndex == 3) {
+          if (layerToggled[i] != clickedIndex) {
+            layerToggled.push(clickedIndex);
+          } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+            for (let j = 0; j <= layerToggled.length; j++) {
+              layerToggled.pop(layerToggled[i]);
+            }
+          }
+          clickedIndexText = "4";
+        } else if (clickedIndex == 4) {
+          if (layerToggled[i] != clickedIndex) {
+            layerToggled.push(clickedIndex);
+          } else if (layerToggled[i] == clickedIndex && circleProperties[clickedIndex].size == 35) {
+            for (let j = 0; j <= layerToggled.length; j++) {
+              layerToggled.pop(4);
+            }
+          }
+          clickedIndexText = "5";
+        }
+        break; // Stop the loop if a circle is clicked
+      }
     }
 
-    // Change size and color of the clicked circle
-    for (let i = 0; i < layerToggled.length; i++) {
-      circleProperties[layerToggled[i]].size = 35; // Change size
-      circleProperties[layerToggled[i]].color = color(0, 255, 0);
-      console.log(layerToggled[i]);
+    if (clickedIndex !== -1) {
+      // Reset properties of all circles to their original values
+      for (let i = 0; i < numSmallCircles; i++) {
+        circleProperties[i].size = smallCircleRadius;
+        circleProperties[i].color = color(255, 0, 0);
+      }
+
+      // Change size and color of the clicked circle
+      for (let i = 0; i < layerToggled.length; i++) {
+        circleProperties[layerToggled[i]].size = 35; // Change size
+        circleProperties[layerToggled[i]].color = color(0, 255, 0);
+        console.log(layerToggled[i]);
+      }
+      console.log("Button", clickedIndex + 1, "clicked");
     }
-    console.log("Button", clickedIndex + 1, "clicked");
   }
 }
 
