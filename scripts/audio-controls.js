@@ -197,7 +197,7 @@ class AudioControls {
 
   screenCapture() {
     console.log("Download button clicked");
-    html2canvas(document.body)
+    html2canvas(document.documentElement)
       .then((canvas) => {
         const image = canvas.toDataURL("image/png");
         const link = document.createElement("a");
