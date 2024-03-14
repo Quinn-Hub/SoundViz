@@ -72,30 +72,31 @@ function draw() {
   background(0);
 
   if (audioControls.sound) {
-    // let spectrum = fft.analyze();
-    reuben_visulizer(audioControls.sound, fft);
+    let spectrum = fft.analyze();
+    //reuben_visulizer(audioControls.sound, fft);
 
-    // for (i = 0; i < layerToggled.length; i++) {
-    //   if (layerToggled[i] == 0) {
-    //     createExplosions(spectrum, particles);
-    //   } else if (layerToggled[i] == 1) {
-    //     drawEqualizerBars(spectrum);
-    //   } else if (layerToggled[i] == 2) {
-    //     let amp = starFFT(fft2);
-    //     DanielParticleManager(amp, circleParticles);
-    //   } else if (layerToggled[i] == 3) {
-    //     rotationAngle += 0.01;
-    //     drawStar(rotationAngle);
-    //   } else if (layerToggled[i] == 4) {
-    //     // Add water ripple function here
-    //   } else if (layerToggled[i] == 5) {
+    for (i = 0; i < layerToggled.length; i++) {
+      if (layerToggled[i] == 0) {
+        createExplosions(spectrum, particles);
+      } else if (layerToggled[i] == 1) {
+        drawEqualizerBars(spectrum);
+      } else if (layerToggled[i] == 2) {
+        let amp = starFFT(fft2);
+        DanielParticleManager(amp, circleParticles);
+      } else if (layerToggled[i] == 3) {
+        rotationAngle += 0.01;
+        drawStar(rotationAngle);
+      } else if (layerToggled[i] == 4) {
+        reuben_visulizer(audioControls.sound, fft);
+      //} else if (layerToggled[i] == 5) {
     
-    //   }
-    // }
+      }
+    }
   }
 
   // // Draw switch visualizer buttons
-  // drawSwitchVisualizerButtons();
+  updateAndDisplayParticles(particles);
+  drawSwitchVisualizerButtons();
 }
 
 function mousePressed() {
@@ -222,6 +223,7 @@ function drawSwitchVisualizerButtons() {
 
 function resizeCanvasHandler() {
   resizeCanvas(canvasContainer.width, canvasContainer.height);
+  console.log("Resizing.")
 }
 
 // Reuben
@@ -269,7 +271,7 @@ function reuben_visulizer(sound, fft) {
   }
 }
 
-// lUCAS
+// lUCAS 
 function lukas_visualizer(
   sound,
   fft,

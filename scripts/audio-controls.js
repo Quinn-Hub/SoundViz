@@ -169,18 +169,18 @@ class AudioControls {
       const file = files[0];
 
       // Check if the audio is currently playing
-      if (!this.audio.paused) {
-        this.audio.pause(); // Stop the currently playing audio
+      if (!this.sound.paused) {
+        this.sound.pause(); // Stop the currently playing audio
         this.isPlaying = false;
       }
 
       // Load the new sound file into p5.js
-      sound.stop(); // Stop the current sound if it's playing
-      sound = loadSound(URL.createObjectURL(file));
+      this.sound.stop(); // Stop the current sound if it's playing
+      this.sound = loadSound(URL.createObjectURL(file));
       this.isPlaying = false; // Reset the play state
 
       // Assign the new audio source
-      this.audio.src = URL.createObjectURL(file);
+      this.sound.src = URL.createObjectURL(file);
       console.log("File uploaded:", file.name);
     };
   }
