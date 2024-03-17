@@ -20,7 +20,7 @@ let clickedIndex = 0;
 let layerToggled = [];
 
 let prevTime = 0;
-let gridSize = 100;
+let gridSize = 200;
 let gridOffset = 20;
 let grid = [];
 
