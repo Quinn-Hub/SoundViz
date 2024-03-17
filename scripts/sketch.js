@@ -25,17 +25,18 @@ let gridOffset = 5;
 let grid = [];
 
 let audioControls = new AudioControls();
-
+/*
 function preload() {
   audioControls.loadAudioByUrl("audio/Franz_Ferdinand_This_Fire.mp3");
 }
+*/
 
 function setup() {
   canvasContainer = select("#canvas-container");
   let canvas = createCanvas(canvasContainer.width, canvasContainer.height);
   canvas.parent("canvas-container");
   // Resize canvas when the page is resized
-  window.addEventListener("resize", resizeCanvasHandler);
+  //window.addEventListener("resize", resizeCanvasHandler);
 
   fft = new p5.FFT();
   fft2 = new p5.FFT();
@@ -45,6 +46,19 @@ function setup() {
   angleIncrement = TWO_PI / 8;
 
   // Initialize properties for each circle
+  let circlePropOld = [];
+  if (circleProperties.length > 0) {
+    circlePropOld = [...circleProperties];
+    console.log(circlePropOld);
+  }
+  else {
+    for (let i = 0; i < numSmallCircles; i++) {
+      circlePropOld.push({
+        color: color(255, 0, 0)
+      });
+    }
+  }
+  circleProperties.length = 0;
   for (let i = 0; i < numSmallCircles; i++) {
     let angle = i * angleIncrement + 3.15;
     let x = bigCircleX + cos(angle) * bigCircleRadius;
@@ -53,7 +67,7 @@ function setup() {
       x: x,
       y: y,
       size: smallCircleRadius,
-      color: color(255, 0, 0),
+      color: circlePropOld[i].color,
     });
   }
 
@@ -221,9 +235,17 @@ function drawSwitchVisualizerButtons() {
   }
 }
 
+/*
 function resizeCanvasHandler() {
   resizeCanvas(canvasContainer.width, canvasContainer.height);
   console.log("Resizing.")
+}
+*/
+
+// idk look at this https://jslegenddev.substack.com/p/how-to-make-your-canvas-scale-to
+function windowResized() {
+  setup();
+  console.log("resizing");
 }
 
 // Reuben

@@ -72,7 +72,9 @@ class AudioControls {
       audioButtonBar.appendChild(button);
     });
 
-    document.body.appendChild(audioButtonBar);
+    //document.body.appendChild(audioButtonBar);
+    const canvasContainer = document.getElementById("canvas-container");
+    canvasContainer.insertAdjacentElement("afterbegin", audioButtonBar);
   }
 
   createSliders() {
