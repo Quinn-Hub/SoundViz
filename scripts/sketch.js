@@ -20,16 +20,16 @@ let clickedIndex = 0;
 let layerToggled = [];
 
 let prevTime = 0;
-let gridSize = 20;
-let gridOffset = 5;
+let gridSize = 100;
+let gridOffset = 20;
 let grid = [];
 
 let audioControls = new AudioControls();
-/*
+
 function preload() {
   audioControls.loadAudioByUrl("audio/Franz_Ferdinand_This_Fire.mp3");
 }
-*/
+
 
 function setup() {
   canvasContainer = select("#canvas-container");
