@@ -54,6 +54,7 @@ function setup() {
   else {
     for (let i = 0; i < numSmallCircles; i++) {
       circlePropOld.push({
+        size: smallCircleRadius,
         color: color(255, 0, 0)
       });
     }
@@ -66,7 +67,7 @@ function setup() {
     circleProperties.push({
       x: x,
       y: y,
-      size: smallCircleRadius,
+      size: circlePropOld[i].size,
       color: circlePropOld[i].color,
     });
   }
@@ -201,6 +202,7 @@ function mousePressed() {
       console.log("Button", clickedIndex + 1, "clicked");
     }
   }
+  console.log(circleProperties);
 }
 
 function drawSwitchVisualizerButtons() {
