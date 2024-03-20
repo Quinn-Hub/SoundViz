@@ -6,11 +6,11 @@ SoundViz is all about having one audio visualizer that is able to toggle between
 
 
 ## Credits
-Michael Quinn
-Lukas Licon
-Daniel Do
-Reuben Chavez
-Tien Le
+- Michael Quinn
+- Lukas Licon
+- Daniel Do
+- Reuben Chavez
+- Tien Le
 
 Made for the CMPM 169: Creative Coding class at UCSC, Winter 2024.
 
@@ -26,7 +26,9 @@ We were inspired by using the sound library from p5.js and some of the examples 
 These examples were used as inspiration from the lectures on sound art as a starting point. We did not replicate the code but we admired the concepts held within these examples and thought about how we could create emergent art through likewise algorithms.
 
 >Example 1: [https://openprocessing.org/sketch/1806074](https://openprocessing.org/sketch/1806074)
+
 >Example 2: [https://openprocessing.org/sketch/1800102](https://openprocessing.org/sketch/1800102)
+
 >Example 3: [https://openprocessing.org/sketch/1782562](https://openprocessing.org/sketch/1782562)
 
 ## Technical Analysis
