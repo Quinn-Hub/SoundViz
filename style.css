@@ -52,7 +52,7 @@
 }
 
 .slider {
-  margin-left: 60%;
+  width: 90%;
   height: 5px;
   background-color: var(--primary-color);
   outline: none;
@@ -60,7 +60,7 @@
   transition: opacity 0.2s;
   border-radius: 10px; /* Adjust border-radius for slider */
   margin-bottom: 15px;
-  margin-left: 15px;
+  margin-left: 5%;
 }
 
 .slider:hover {
