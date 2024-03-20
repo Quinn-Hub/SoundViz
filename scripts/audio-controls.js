@@ -78,8 +78,15 @@ class AudioControls {
   }
 
   createSliders() {
-    const audioSliderBar = document.createElement("div");
-    audioSliderBar.className = "slider-container";
+    const audioSliderBars = []
+    const audioSliderBar1 = document.createElement("div");
+    const audioSliderBar2 = document.createElement("div");
+    audioSliderBars.push(audioSliderBar1);
+    audioSliderBars.push(audioSliderBar2);
+    audioSliderBar1.className = "slider-container";
+    audioSliderBar1.id = "vol-container";
+    audioSliderBar2.className = "slider-container";
+    audioSliderBar2.id = "pan-container";
 
     const sliders = [
       {
@@ -96,7 +103,7 @@ class AudioControls {
       },
     ];
 
-    sliders.forEach((item) => {
+    sliders.forEach((item, index) => {
       const label = document.createElement("label");
       label.style = "text-align:center";
       label.innerText = item.text;
@@ -114,11 +121,16 @@ class AudioControls {
         item.function(e.target.value);
       });
 
-      audioSliderBar.appendChild(label);
-      audioSliderBar.appendChild(slider);
+      audioSliderBars[index].appendChild(label);
+      audioSliderBars[index].appendChild(slider);
     });
 
-    document.body.appendChild(audioSliderBar);
+    document.body.appendChild(audioSliderBars[0]);
+    document.body.appendChild(audioSliderBars[1]);
+
+    const canvasContainer = document.getElementById("canvas-container");
+    canvasContainer.insertAdjacentElement("afterbegin", audioSliderBar1);
+    canvasContainer.insertAdjacentElement("afterbegin", audioSliderBar2);
   }
 
   playSong() {

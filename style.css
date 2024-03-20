@@ -34,6 +34,7 @@
   position: fixed;
   bottom: 10px;
   left: 20px;
+  width: 33%;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -44,13 +45,15 @@
 
 .slider {
   -webkit-appearance: none;
-  width: 300px;
+  width: 60%;
   height: 5px;
   background-color: var(--primary-color);
   outline: none;
   opacity: 0.5;
   transition: opacity 0.2s;
   border-radius: 10px; /* Adjust border-radius for slider */
+  margin-bottom: 15px;
+  margin-left: 15px;
 }
 
 .slider:hover {
