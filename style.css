@@ -104,8 +104,8 @@ body {
 
 #fullscreen-button {
   position:relative;
-  left: 85%;
-  top: 480px;
+  left: 0.7%;
+  top: 528px;
   /*transform: translate(-50%, -50%);*/
   background-color: var(--primary-color);
   color: var(--text-color);
