@@ -17,7 +17,11 @@ let angleIncrement;
 let circleProperties = [];
 let clickedIndexText = "1";
 let clickedIndex = 0;
-let layerToggled = [];
+let layer1 = false;
+let layer2 = false;
+let layer3 = false;
+let layer4 = false;
+let layer5 = false;
 
 let prevTime = 0;
 let gridSize = 200;
@@ -88,28 +92,27 @@ function draw() {
 
   if (audioControls.sound) {
     let spectrum = fft.analyze();
-    //reuben_visulizer(audioControls.sound, fft);
 
-    for (i = 0; i < layerToggled.length; i++) {
-      if (layerToggled[i] == 0) {
-        createExplosions(spectrum, particles);
-      } else if (layerToggled[i] == 1) {
-        drawEqualizerBars(spectrum);
-      } else if (layerToggled[i] == 2) {
-        let amp = starFFT(fft2);
-        DanielParticleManager(amp, circleParticles);
-      } else if (layerToggled[i] == 3) {
-        rotationAngle += 0.01;
-        drawStar(rotationAngle);
-      } else if (layerToggled[i] == 4) {
-        reuben_visulizer(audioControls.sound, fft);
-      //} else if (layerToggled[i] == 5) {
-    
-      }
+    if (layer1) {
+      createExplosions(spectrum, particles);
+    }
+    if (layer2) {
+      drawEqualizerBars(spectrum);
+    }
+    if (layer3) {
+      let amp = starFFT(fft2);
+      GlitterParticles(amp, circleParticles);
+    }
+    if (layer4) {
+      rotationAngle += 0.01;
+      drawStar(rotationAngle);
+    }
+    if (layer5) {
+      discoSquares(audioControls.sound, fft);
     }
   }
 
-  // // Draw switch visualizer buttons
+  // Draw switch visualizer buttons
   updateAndDisplayParticles(particles);
   drawSwitchVisualizerButtons();
 }
@@ -122,63 +125,38 @@ function mousePressed() {
       if (d < props.size) {
         clickedIndex = i;
         if (clickedIndex == 0) {
-          if (layerToggled[i] != clickedIndex) {
-            layerToggled.push(clickedIndex);
-          } else if (
-            layerToggled[i] == clickedIndex &&
-            circleProperties[clickedIndex].size == 35
-          ) {
-            for (let j = 0; j <= layerToggled.length; j++) {
-              layerToggled.pop(layerToggled[i]);
-            }
+          if (layer1 == false) {
+            layer1 = true;
+          } else {
+            layer1 = false;
           }
           clickedIndexText = "1";
         } else if (clickedIndex == 1) {
-          if (layerToggled[i] != clickedIndex) {
-            layerToggled.push(clickedIndex);
-          } else if (
-            layerToggled[i] == clickedIndex &&
-            circleProperties[clickedIndex].size == 35
-          ) {
-            for (let j = 0; j <= layerToggled.length; j++) {
-              layerToggled.pop(layerToggled[i]);
-            }
+          if (layer2 == false) {
+            layer2 = true;
+          } else {
+            layer2 = false;
           }
           clickedIndexText = "2";
         } else if (clickedIndex == 2) {
-          if (layerToggled[i] != clickedIndex) {
-            layerToggled.push(clickedIndex);
-          } else if (
-            layerToggled[i] == clickedIndex &&
-            circleProperties[clickedIndex].size == 35
-          ) {
-            for (let j = 0; j <= layerToggled.length; j++) {
-              layerToggled.pop(layerToggled[i]);
-            }
+          if (layer3 == false) {
+            layer3 = true;
+          } else {
+            layer3 = false;
           }
           clickedIndexText = "3";
         } else if (clickedIndex == 3) {
-          if (layerToggled[i] != clickedIndex) {
-            layerToggled.push(clickedIndex);
-          } else if (
-            layerToggled[i] == clickedIndex &&
-            circleProperties[clickedIndex].size == 35
-          ) {
-            for (let j = 0; j <= layerToggled.length; j++) {
-              layerToggled.pop(layerToggled[i]);
-            }
+          if (layer4 == false) {
+            layer4 = true;
+          } else {
+            layer4 = false;
           }
           clickedIndexText = "4";
         } else if (clickedIndex == 4) {
-          if (layerToggled[i] != clickedIndex) {
-            layerToggled.push(clickedIndex);
-          } else if (
-            layerToggled[i] == clickedIndex &&
-            circleProperties[clickedIndex].size == 35
-          ) {
-            for (let j = 0; j <= layerToggled.length; j++) {
-              layerToggled.pop(4);
-            }
+          if (layer5 == false) {
+            layer5 = true;
+          } else {
+            layer5 = false;
           }
           clickedIndexText = "5";
         }
@@ -186,23 +164,44 @@ function mousePressed() {
       }
     }
 
-    if (clickedIndex !== -1) {
-      // Reset properties of all circles to their original values
-      for (let i = 0; i < numSmallCircles; i++) {
-        circleProperties[i].size = smallCircleRadius;
-        circleProperties[i].color = color(255, 0, 0);
-      }
-
+    if (layer1 == false) {
+      circleProperties[0].size = smallCircleRadius;
+      circleProperties[0].color = color(255, 0, 0);
+    } else if (layer1 == true) {
       // Change size and color of the clicked circle
-      for (let i = 0; i < layerToggled.length; i++) {
-        circleProperties[layerToggled[i]].size = 35; // Change size
-        circleProperties[layerToggled[i]].color = color(0, 255, 0);
-        console.log(layerToggled[i]);
-      }
-      console.log("Button", clickedIndex + 1, "clicked");
+      circleProperties[0].size = 35; // Change size
+      circleProperties[0].color = color(0, 255, 0); // Change color
     }
+    if (layer2 == false) {
+      circleProperties[1].size = smallCircleRadius;
+      circleProperties[1].color = color(255, 0, 0);
+    } else if (layer2 == true) {
+      circleProperties[1].size = 35;
+      circleProperties[1].color = color(0, 255, 0);
+    }
+    if (layer3 == false) {
+      circleProperties[2].size = smallCircleRadius;
+      circleProperties[2].color = color(255, 0, 0);
+    } else if (layer3 == true) {
+      circleProperties[2].size = 35;
+      circleProperties[2].color = color(0, 255, 0);
+    }
+    if (layer4 == false) {
+      circleProperties[3].size = smallCircleRadius;
+      circleProperties[3].color = color(255, 0, 0);
+    } else if (layer4 == true) {
+      circleProperties[3].size = 35;
+      circleProperties[3].color = color(0, 255, 0);
+    }
+    if (layer5 == false) {
+      circleProperties[4].size = smallCircleRadius;
+      circleProperties[4].color = color(255, 0, 0);
+    } else if (layer5 == true) {
+      circleProperties[4].size = 35;
+      circleProperties[4].color = color(0, 255, 0);
+    }
+    console.log("Button", clickedIndex + 1, "clicked");
   }
-  console.log(circleProperties);
 }
 
 function drawSwitchVisualizerButtons() {
@@ -250,8 +249,7 @@ function windowResized() {
   console.log("resizing");
 }
 
-// Reuben
-function reuben_visulizer(sound, fft) {
+function discoSquares(sound, fft) {
   if (sound.isPlaying()) {
     let spectrum = fft.analyze();
 
@@ -293,28 +291,6 @@ function reuben_visulizer(sound, fft) {
       rect(square.x, square.y, gridSize, gridSize);
     }
   }
-}
-
-// lUCAS 
-function lukas_visualizer(
-  sound,
-  fft,
-  particles,
-  canvasContainer,
-  numSmallCircles,
-  circleProperties,
-  smallCircleRadius,
-  clickedIndexText,
-  clickedIndex
-) {
-  if (sound.isPlaying()) {
-    let spectrum = fft.analyze();
-
-    createExplosions(spectrum, particles);
-    drawEqualizerBars(spectrum);
-  }
-
-  updateAndDisplayParticles(particles);
 }
 
 function createExplosions(spectrum, particles) {
@@ -361,7 +337,7 @@ function createExplosion(x, y, radius, spectrumValue, particles) {
 
   for (let i = 0; i < 20; i++) {
     let angle = random(TWO_PI);
-    let particle = new LukasParticle(
+    let particle = new Explosion(
       x,
       y,
       cos(angle) * radius,
@@ -372,7 +348,7 @@ function createExplosion(x, y, radius, spectrumValue, particles) {
   }
 }
 
-class LukasParticle {
+class Explosion {
   constructor(x, y, vx, vy, explosionColor) {
     this.x = x;
     this.y = y;
@@ -400,43 +376,9 @@ class LukasParticle {
   }
 }
 
-// DANIEL
-function daniel_visualizer(
-  sound,
-  fft,
-  particles,
-  canvasContainer,
-  bigCircleX,
-  bigCircleY,
-  bigCircleRadius,
-  rotationAngle
-) {
-  if (sound.isPlaying()) {
-    let spectrum = fft.analyze();
-
-    // Set frame rate
-    frameRate(30);
-
-    // // Clear the canvas and set background color
-    // background(255);
-
-    // Draw a star in the center of the canvas with rotation
-    drawStar(rotationAngle); // Increment rotation angle for smooth rotation
-
-    // Switch angle mode back to DEGREES for FFT waveform
-    let { wave, amp } = starFFT(fft);
-
-    // Draw guitar strings based on audio waveform
-    drawGuitarStrings(wave);
-
-    // Create and manage particles
-    DanielParticleManager(amp, particles);
-  }
-}
-
-function DanielParticleManager(amp, circleParticles) {
+function GlitterParticles(amp, circleParticles) {
   translate(width / 2, height / 2);
-  let p = new DanielParticle();
+  let p = new Glitter();
   circleParticles.push(p);
 
   for (let i = circleParticles.length - 1; i >= 0; i--) {
@@ -495,7 +437,7 @@ function drawStar(rotationAngle) {
   rotationAngle += 0.01;
 }
 
-class DanielParticle {
+class Glitter {
   constructor() {
     this.pos = p5.Vector.random2D().mult(250);
     this.vel = createVector(0, 0);

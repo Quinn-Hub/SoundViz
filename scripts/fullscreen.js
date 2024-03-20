@@ -33,7 +33,7 @@
         // Create fullscreen button
         var fullscreenButton = $("<button>")
             .attr("id", "fullscreen-button")
-            .text("Toggle Full Screen");
+            .text("Full Screen");
 
         // Append fullscreen button to canvas container
         $("body").append(fullscreenButton);
