@@ -208,6 +208,7 @@ function drawSwitchVisualizerButtons() {
   // Draw the big circle
   noFill();
   stroke(0);
+  strokeWeight(5);
   fill(220);
   ellipse(bigCircleX, bigCircleY, bigCircleRadius * 2);
   fill(0);
@@ -287,6 +288,7 @@ function discoSquares(sound, fft) {
       let colorB = translateZ; // Map z-axis FFT value to blue channel
 
       // Draw the square at its new position with calculated color
+      stroke(color(colorR, colorG, colorB));
       fill(colorR, colorG, colorB);
       rect(square.x, square.y, gridSize, gridSize);
     }
@@ -319,8 +321,7 @@ function drawEqualizerBars(spectrum) {
     let prevH = i > 0 ? -height + map(spectrum[i - 10], 0, 255, height, 0) : h;
     h = lerp(prevH, h, 0.2);
 
-    let barColor = color(map(spectrum[i], 0, 255, 0, 360), 80, 90);
-    fill(barColor);
+    stroke(color(map(spectrum[i], 0, 255, 0, 360), 80, 90));
     rect(x, height, width / spectrum.length, h);
   }
 }
@@ -426,9 +427,9 @@ function starFFT(fft2) {
 
 function drawStar(rotationAngle) {
   angleMode(RADIANS);
-  stroke(100);
+  stroke(color(random(0, 255), random(0, 255), random(0, 255)));
   noFill();
-  strokeWeight(2);
+  strokeWeight(10);
   push(); // Save current transformation state
   translate(width / 2, height / 2); // Translate to the center of the canvas
   rotate(rotationAngle); // Rotate the canvas
