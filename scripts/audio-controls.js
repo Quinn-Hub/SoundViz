@@ -61,6 +61,12 @@ class AudioControls {
         text: "Download",
         function: this.screenCapture.bind(this),
       },
+      {
+        class: "button", // Add fullscreen button
+        id: "fullscreenButton",
+        text: "Fullscreen",
+        function: this.toggleFullscreen.bind(this),
+      },
     ];
 
     buttons.forEach((item) => {
@@ -72,7 +78,6 @@ class AudioControls {
       audioButtonBar.appendChild(button);
     });
 
-    //document.body.appendChild(audioButtonBar);
     const canvasContainer = document.getElementById("canvas-container");
     canvasContainer.insertAdjacentElement("afterbegin", audioButtonBar);
   }
@@ -170,13 +175,11 @@ class AudioControls {
 
       const file = files[0];
 
-      // Check if the audio is currently playing
       if (!this.sound.paused) {
         this.sound.pause(); // Stop the currently playing audio
         this.isPlaying = false;
       }
 
-      // Load the new sound file into p5.js
       this.sound.stop(); // Stop the current sound if it's playing
       this.sound = loadSound(URL.createObjectURL(file));
       this.isPlaying = false; // Reset the play state
@@ -213,10 +216,18 @@ class AudioControls {
 
   pan(v) {
     if (this.sound) {
-      // Adjust pan based on the slider value
-      // Example:
       let value = map(v, 0.0, 1.0, -1.0, 1.0);
       this.sound.pan(value);
     }
   }
+
+  toggleFullscreen() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+    }
+  }
 }
+
+
