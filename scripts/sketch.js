@@ -108,7 +108,9 @@ function draw() {
       drawStar(rotationAngle);
     }
     if (layer5) {
-      discoSquares(audioControls.sound, fft);
+      //discoSquares(audioControls.sound, fft);
+      let wave = fft.waveform();
+      drawCircle(wave);
     }
   }
 
@@ -127,6 +129,7 @@ function mousePressed() {
         if (clickedIndex == 0) {
           if (layer1 == false) {
             layer1 = true;
+            randomColor = random(0, 255);
           } else {
             layer1 = false;
           }
@@ -134,6 +137,7 @@ function mousePressed() {
         } else if (clickedIndex == 1) {
           if (layer2 == false) {
             layer2 = true;
+            barColor = random(0, 255);
           } else {
             layer2 = false;
           }
@@ -148,6 +152,7 @@ function mousePressed() {
         } else if (clickedIndex == 3) {
           if (layer4 == false) {
             layer4 = true;
+            starColor = color(random(0, 255), random(0, 255), random(0, 255));
           } else {
             layer4 = false;
           }
@@ -155,6 +160,7 @@ function mousePressed() {
         } else if (clickedIndex == 4) {
           if (layer5 == false) {
             layer5 = true;
+            ringColor = color(random(0, 255), random(0, 255), random(0, 255));
           } else {
             layer5 = false;
           }
@@ -321,7 +327,8 @@ function drawEqualizerBars(spectrum) {
     let prevH = i > 0 ? -height + map(spectrum[i - 10], 0, 255, height, 0) : h;
     h = lerp(prevH, h, 0.2);
 
-    stroke(color(map(spectrum[i], 0, 255, 0, 360), 80, 90));
+    //stroke(color(map(spectrum[i], 0, 255, 0, 360), 80, 90));
+    stroke(color(map(spectrum[i], 0, 255, 0, 360), barColor, barColor + 10));
     rect(x, height, width / spectrum.length, h);
   }
 }
@@ -334,7 +341,7 @@ function updateAndDisplayParticles(particles) {
 }
 
 function createExplosion(x, y, radius, spectrumValue, particles) {
-  let explosionColor = color(map(spectrumValue, 0, 255, 0, 360), 80, 90);
+  let explosionColor = color(map(spectrumValue, 0, 255, 0, 360), randomColor, randomColor + 10);
 
   for (let i = 0; i < 20; i++) {
     let angle = random(TWO_PI);
@@ -393,11 +400,26 @@ function GlitterParticles(amp, circleParticles) {
   translate(-1 * (width / 2), -(height / 2));
 }
 
-function drawGuitarStrings(wave) {
-  stroke(3);
-  fill(255);
-  for (let l = -1; l <= 1; l += 2) {
-    for (let h = 0; h <= 400; h += 100) {
+function drawCircle(wave) {
+  strokeWeight(1);
+  stroke(ringColor);
+  translate(width/2, height/2);
+  noFill();
+  
+  for(var l = -1; l <= 1; l+= 2){
+    beginShape();
+    for(var i = 0; i <= 180; i += 0.5) {
+      var index = floor(map(i, 0, 180, 0, wave.length - 1));
+      var r = map(wave[index], -1, 1, 400, 300);
+      var x = r * sin(i) * l;
+      var y = r * cos(i);
+      vertex(x,y);
+    }
+  endShape();
+  }
+  translate(-(width/2), -(height/2));
+  /*for (let l = -1; l <= 1; l += 2) {
+    for (let h = 0; h <= height; h += 500) {
       beginShape();
       for (let i = 0; i <= 180; i += 0.5) {
         let index = floor(map(i, 0, 180, 0, wave.length - 1));
@@ -408,15 +430,42 @@ function drawGuitarStrings(wave) {
       }
       endShape();
     }
+  }*/
+  /*beginShape();
+  for (let i = 0; i <= 180; i += 0.5) {
+    let index = floor(map(i, 0, 180, 0, wave.length - 1));
+    let r = map(wave[index], -1, 1, 260, 190);
+    let x = r * i;
+    let y = r - (height / 5);
+    vertex(x, y);
   }
+  endShape();
+
+  beginShape();
+  for (let i = 0; i <= 180; i += 0.5) {
+    let index = floor(map(i, 0, 180, 0, wave.length - 1));
+    let r = map(wave[index], -1, 1, width, height);
+    let y = r * i;
+    let x = r;// - (height / 5);
+    vertex(x, y);
+  }
+  endShape();*/
+
+  /*beginShape();
+  for (let i = 0; i <= 180; i += 0.5) {
+    let index = floor(map(i, 0, 180, 0, wave.length - 1));
+    let r = map(wave[index], -1, 1, 260, 190);
+    let y = r * i;
+    let x = r + (height * );
+    vertex(x, y);
+  }
+  endShape();*/
 }
 
 function starFFT(fft2) {
-  angleMode(DEGREES);
   translate(width / 2, height / 2);
 
-  // Analyze the audio with FFT
-  //fft.analyze();
+  // Analyze the audio
   let amp = fft2.getEnergy(20, 200);
   let wave = fft2.waveform();
   stroke(0);
@@ -427,7 +476,7 @@ function starFFT(fft2) {
 
 function drawStar(rotationAngle) {
   angleMode(RADIANS);
-  stroke(color(random(0, 255), random(0, 255), random(0, 255)));
+  stroke(starColor);
   noFill();
   strokeWeight(10);
   push(); // Save current transformation state

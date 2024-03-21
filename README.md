@@ -6,13 +6,13 @@ SoundViz is all about having one audio visualizer that is able to toggle between
 
 
 ## Credits
+Made for the CMPM 169: Creative Coding class at UCSC, Winter 2024.
+
 - Michael Quinn
 - Lukas Licon
 - Daniel Do
 - Reuben Chavez
 - Tien Le
-
-Made for the CMPM 169: Creative Coding class at UCSC, Winter 2024.
 
 ## Theoretical Analysis
 In crafting our project, we aimed to make controlled chaos through our individuality by having each layer serve as an example of our individual expression. We sought to make a fusion of manipulating layers of visuals that are influenced by sound and manipulating the sound itself to create artistic chaos through individuality. Our project stands to be a testament to embrace the diversity of artistic intent amidst the chaos.
